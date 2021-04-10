@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 require("../.env");
 
 const URI = "mongodb://localhost/shoppingplaza";
-console.log(URI)
+
 mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 

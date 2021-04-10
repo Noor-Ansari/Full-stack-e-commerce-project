@@ -1,52 +1,52 @@
-nav{
-    color : #fff;
-    padding: 1rem;
+nav {
+	color: #fff;
+	padding: 1rem 0;
+	margin-bottom: 2rem;
 }
 
-.first-row, .left-part, .right-part {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.first-row,
+.left-part,
+.right-part {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.first-row{
-    margin-bottom: 1rem;
+.first-row {
+	margin-bottom: 1rem;
 }
 
-.second-row > ul{
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-}
-
-.brand-logo {
-    font-size: 2rem;
-    cursor: pointer;
+.second-row > ul {
+	display: flex;
+	justify-content: center;
+	list-style-type: none;
 }
 
 .brand-link {
-    text-decoration: none;
-    color: #fff;
+	font-size: 2.4rem;
+	cursor: pointer;
+	text-decoration: none;
+	color: #fff;
 }
 
-.nav-icon{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 1rem;
-    transition: all 1s ease;
+.nav-icon,
+.nav-links {
+	text-decoration: none;
+	color: #fff;
+	transition: all 1s ease;
+	margin: 0 1.5rem;
+	font-size: 1.2rem;
 }
 
-.nav-links{
-    margin: 0 2rem;
-    text-decoration: none;
-    color: #fff;
-    transition: all 1s ease;
+.nav-icon {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
-.nav-icon:hover, .nav-links:hover{
-    color: #7b113a;
-    cursor: pointer;
+.nav-icon:hover,
+.nav-links:hover {
+	color: #7b113a;
+	cursor: pointer;
 }
-

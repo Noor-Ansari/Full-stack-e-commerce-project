@@ -1,9 +1,12 @@
 const express = require("express");
-const Model = require("./model/product");
+const ProductModel = require("./model/product");
+const UserModel = require("./model/user")
 const multer = require("multer");
 const fs = require("fs");
-require("./.env");
 const bodyParser = require("body-parser");
+const cors = require('cors')
+const { OAuth2Client } = require('google-auth-library')
+const client = new OAuth2Client(process.env.CLIENT_ID)
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -16,17 +19,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const app = express();
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
 app.get("/api/allproducts", (req, res) => {
-  Model.find({})
+  ProductModel.find({})
     .sort({ id: -1 })
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(500).json(err));
@@ -34,7 +33,7 @@ app.get("/api/allproducts", (req, res) => {
 
 app.get("/api/allproducts/product/:id", (req, res) => {
   const id = req.params.id;
-  Model.findById(id)
+  ProductModel.findById(id)
   .then((data) => res.status(200).json(data))
   .catch((err) => res.status(500).json(err))
 })
@@ -50,12 +49,44 @@ app.get("/api/allproducts/:category", (req, res) => {
     })
   }
 
-  Model.find({ category: category })
+  ProductModel.find({ category: category })
     .sort({ id: -1 })
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(500).json(err));
 });
 
+
+app.post("/api/google/register", async (req, res) => {
+
+  const ticket = await client.verifyIdToken({
+    idToken: req.body.tokenId,
+    audience: process.env.CLIENT_ID
+});
+
+const { name, email } = ticket.getPayload();  
+const newUser = new UserModel({
+  name,
+  email
+})
+newUser
+.save()
+.then((response) => res.status(200).json(response))
+.catch((err) => res.status(500).json(err))
+})
+
+app.post("/api/google/login", async (req, res) => {
+
+  const ticket = await client.verifyIdToken({
+    idToken: req.body.tokenId,
+    audience: process.env.CLIENT_ID
+});
+
+const { email } = ticket.getPayload();  
+
+UserModel.findOne({email : email})
+.then((response) => res.status(200).json(response))
+.catch((err) => res.status(500).json(err))
+})
 
 // admin specific route
 app.get("/products", (req, res) => {
@@ -68,7 +99,7 @@ app.post("/products/upload", upload.single("image"), (req, res, next) => {
   if (req.file) {
     const newImg = fs.readFileSync(req.file.path);
     const encodedImg = newImg.toString("base64");
-    const product = new Model({
+    const product = new ProductModel({
       name,
       description,
       price,
