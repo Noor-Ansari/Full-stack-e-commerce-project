@@ -1,0 +1,48 @@
+nav{
+    color : #fff;
+    padding: 1rem;
+}
+
+.first-row, .left-part, .right-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.first-row{
+    margin-bottom: 1rem;
+}
+
+.second-row > ul{
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.brand-logo {
+    font-size: 2rem;
+}
+
+.nav-icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1rem;
+    transition: all 0.4s ease;
+}
+
+.nav-links{
+    margin: 0 2rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-icon:hover, .nav-links:hover{
+    color: #7b113a;
+    cursor: pointer;
+}
+
+.brand-logo:hover {
+    cursor: pointer;
+}
