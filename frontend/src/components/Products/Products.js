@@ -1,17 +1,8 @@
 import "./Products.css";
-import React, {useState, useEffect} from "react";
-import axios from "axios";
+import React from "react";
+import {Link} from "react-router-dom";
 
-function Products() {
-  const [ products, setProducts ]  = useState([]);
-  console.log("run")  
-  
-  useEffect(() => {
-      axios.get("http://localhost:4000/allproducts")
-      .then(( { data })  => setProducts(data))
-      .catch(err => console.log(err))
-    }, [])
-
+function Products({products}) {
   return (
           <div className="product-row">
               {products &&
@@ -25,7 +16,7 @@ function Products() {
                       <div className="card-text">
                           {product.name}
                       </div>
-                      <button className="card-button">Learn more</button>
+                    <Link to={`/allproducts/product/${product._id}`} className="card-link">Learn more </Link>
                   </div>
                   ))}
           </div>

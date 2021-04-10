@@ -21,6 +21,12 @@ nav{
 
 .brand-logo {
     font-size: 2rem;
+    cursor: pointer;
+}
+
+.brand-link {
+    text-decoration: none;
+    color: #fff;
 }
 
 .nav-icon{
@@ -29,13 +35,14 @@ nav{
     align-items: center;
     justify-content: center;
     margin: 0 1rem;
-    transition: all 0.4s ease;
+    transition: all 1s ease;
 }
 
 .nav-links{
     margin: 0 2rem;
     text-decoration: none;
     color: #fff;
+    transition: all 1s ease;
 }
 
 .nav-icon:hover, .nav-links:hover{
@@ -43,6 +50,3 @@ nav{
     cursor: pointer;
 }
 
-.brand-logo:hover {
-    cursor: pointer;
-}

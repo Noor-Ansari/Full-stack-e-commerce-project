@@ -20,7 +20,7 @@ function Navbar() {
                         Location
                         </span>
                 </div>
-                <h1 className="brand-logo">Shopping Plaza</h1>
+                <h1 className="brand-logo"><Link to="/" className="brand-link"> Shopping Plaza </Link></h1>
                 <div className="right-part">
                     <span className="nav-icon">
                     <AccountCircleOutlinedIcon/>
@@ -35,10 +35,10 @@ function Navbar() {
             <div className="second-row">
                 <ul>
                     <li><Link to="/" className="nav-links">Home</Link></li>
-                    <li><Link to="/fashion" className="nav-links">Fashion</Link></li>
-                    <li><Link to="/sports" className="nav-links">Sports</Link></li>
-                    <li><Link to="/technology" className="nav-links">Technology</Link></li>
-                    <li><Link to="/footwear" className="nav-links">Footwear</Link></li>
+                    <li><Link to="/allproducts/fashion" className="nav-links">Fashion</Link></li>
+                    <li><Link to="/allproducts/sports" className="nav-links">Sports</Link></li>
+                    <li><Link to="/allproducts/technology" className="nav-links">Technology</Link></li>
+                    <li><Link to="/allproducts/footwear" className="nav-links">Footwear</Link></li>
                 </ul>
             </div>
         </nav>

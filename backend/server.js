@@ -25,14 +25,21 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/allproducts", (req, res) => {
+app.get("/api/allproducts", (req, res) => {
   Model.find({})
     .sort({ id: -1 })
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(500).json(err));
 });
 
-app.get("/products/:category", (req, res) => {
+app.get("/api/allproducts/product/:id", (req, res) => {
+  const id = req.params.id;
+  Model.findById(id)
+  .then((data) => res.status(200).json(data))
+  .catch((err) => res.status(500).json(err))
+})
+
+app.get("/api/allproducts/:category", (req, res) => {
   const category = req.params.category;
   const availableCategories =  {'fashion'  : 'fashion', 'technology' : 'technology',  'footwear' : 'footwear', 'sports': 'sports',}
 
