@@ -1,11 +1,13 @@
 const express = require("express");
 const ProductModel = require("./model/product");
 const UserModel = require("./model/user")
+const CommentModel = require("./model/comment")
+const mongoose = require("mongoose")
 const multer = require("multer");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require('cors')
-const { OAuth2Client } = require('google-auth-library')
+const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID)
 
 const storage = multer.diskStorage({
@@ -33,9 +35,38 @@ app.get("/api/allproducts", (req, res) => {
 
 app.get("/api/allproducts/product/:id", (req, res) => {
   const id = req.params.id;
+let productInfo = {
+  product : "",
+  comments : [],
+  errors : [],
+}
+  CommentModel.find({ product_id : `${id}` })
+  .then((comments) => comments.forEach(comment => {
+    UserModel.find({_id : comment.user_id})
+    .then(user => {
+      console.log(user[0])
+        productInfo.comments.push({
+        user_name : user[0].name,
+        product_id : comment.product_id,
+        time_stamp : comment.time_stamp,
+        comment : comment.comment,
+      })
+    })
+    .catch(err => productInfo.errors.push(err))
+  }))
+  .catch((err) => productInfo.errors.push(err))
+
+  console.log(productInfo.comments)
+
   ProductModel.findById(id)
-  .then((data) => res.status(200).json(data))
-  .catch((err) => res.status(500).json(err))
+    .then((product) =>{
+      productInfo.product = product
+    res.status(200).json(productInfo)
+  })
+  .catch((err) => {
+    productInfo.errors.push(err)
+    res.status(500).json(productInfo)
+  })
 })
 
 app.get("/api/allproducts/:category", (req, res) => {

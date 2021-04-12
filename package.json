@@ -3,7 +3,6 @@
         "devStart": " concurrently \"cd backend && npm run devStart \" \" cd frontend && npm run start\" "
     },
     "dependencies": {
-        "concurrently": "^6.0.1",
-        "cors": "^2.8.5"
+        "concurrently": "^6.0.1"
     }
 }

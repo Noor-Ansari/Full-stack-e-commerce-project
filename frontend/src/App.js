@@ -9,6 +9,7 @@ import React, {useState} from "react";
 
 function App() {
 	const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+	console.log(user)
 	
 	return (
 		<Router>

@@ -8,6 +8,7 @@ import Loader from "react-loader-spinner";
 function SingleProduct() {
 	const [product, setProduct] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
+	const [comments,  setComments] = useState([])
 	const { id } = useParams();
 	console.log(isLoading);
 
@@ -16,8 +17,9 @@ function SingleProduct() {
 			.get(`http://localhost:4000/api/allproducts/product/${id}`)
 			.then(({ data }) => {
 				setTimeout(() => {
-					setProduct(data);
-					setIsLoading(false);
+					setProduct(data.product);
+					setComments(data.comments)
+					setIsLoading(false);	
 				}, 1000);
 			})
 			.catch((err) => console.log(err));
@@ -52,6 +54,11 @@ function SingleProduct() {
 							</div>
 						</div>
 					</div>
+					{
+						comments.map(comment => (
+							<p>{comment.comment}</p>
+						))
+					}
 				</div>
 			)}
 		</>
