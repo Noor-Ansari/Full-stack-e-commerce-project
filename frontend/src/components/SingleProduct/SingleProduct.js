@@ -4,13 +4,14 @@ import { useParams, Link } from "react-router-dom";
 import "./SingleProduct.css";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Loader from "react-loader-spinner";
+import CommentList from "../CommentList/CommentList";
+import CommentForm from "../CommentForm/CommentForm";
 
 function SingleProduct() {
 	const [product, setProduct] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const [comments,  setComments] = useState([])
 	const { id } = useParams();
-	console.log(isLoading);
 
 	useEffect(() => {
 		axios
@@ -32,7 +33,8 @@ function SingleProduct() {
 					<Loader type='Oval' color='#fff' height={100} width={100} />
 				</div>
 			) : (
-				<div className='main-wrapper'>
+				<div className="main-wrapper">
+				<div className='card-wrapper'>
 					<Link to='/' className='main-link'>
 						<ArrowBackIosIcon /> Back to home
 					</Link>
@@ -54,11 +56,9 @@ function SingleProduct() {
 							</div>
 						</div>
 					</div>
-					{
-						comments.map(comment => (
-							<p>{comment.comment}</p>
-						))
-					}
+				</div>
+				<CommentForm product_id = {id} />
+				{comments && <CommentList comments={comments }/>}
 				</div>
 			)}
 		</>
