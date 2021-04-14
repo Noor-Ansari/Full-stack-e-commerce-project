@@ -6,16 +6,19 @@ import SingleProduct from "./components/SingleProduct/SingleProduct";
 import SignInPage from "./components/SignInPage/SignInPage";
 import Navbar from "./components/Navbar/Navbar";
 import React, {useState} from "react";
+import CartPage from "./components/CartPage/CartPage";
 
 function App() {
+	
 	const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+	
 	return (
 		<Router>
 			<div className='App'>
 					<Switch>
 						<Route path='/allproducts/product/:id'>
 						<Navbar user={user} />
-							<SingleProduct />
+							<SingleProduct user={user} setUser={setUser} />
 						</Route>
 						<Route path='/allproducts/:category'>
 						<Navbar user={user} />
@@ -23,6 +26,9 @@ function App() {
 						</Route>
 						<Route path='/signin'>
 							<SignInPage setUser={setUser} />
+						</Route>
+						<Route path='/user/cart'>
+							<CartPage setUser={setUser} user={user} />
 						</Route>
 						<Route path='/'>
 						<Navbar user={user} />

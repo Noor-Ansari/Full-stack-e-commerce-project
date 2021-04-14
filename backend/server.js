@@ -1,14 +1,9 @@
 const express = require("express");
-const ProductModel = require("./model/product");
-const UserModel = require("./model/user");
-const CommentModel = require("./model/comment");
-const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client(process.env.CLIENT_ID);
+const controllers = require("./controllers/index")
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -26,113 +21,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
-app.get("/api/allproducts", (req, res) => {
-	ProductModel.find({})
-		.sort({ id: -1 })
-		.then((data) => res.status(200).json(data))
-		.catch((err) => res.status(500).json(err));
-});
+app.get("/api/allproducts", controllers.getAllProducts);
 
-app.get("/api/allproducts/product/:id", (req, res) => {
-	const id = req.params.id;
+app.get("/api/allproducts/product/:id", controllers.getProductById);
 
-	let productInfo = {
-		product: "",
-		comments: [],
-		errors: [],
-	};
+app.get("/api/allproducts/:category", controllers.getProductsByCategory);
 
-	CommentModel.find({ product_id : `${id}` })
-	.then((comments) => comments.forEach(comment => {
-	  UserModel.find({_id : comment.user_id})
-	  .then(user => {
-		console.log(user[0])
-		  productInfo.comments.push({
-		  user_name : user[0].name,
-		  product_id : comment.product_id,
-		  time_stamp : comment.time_stamp,
-		  text : comment.comment,
-		})
-	  })
-	  .catch(err => productInfo.errors.push(err))
-	}))
-	.catch((err) => productInfo.errors.push(err))
+app.get("/api/comments/:id", controllers.getProductComments)
 
-	ProductModel.findById(id)
-		.then((product) => {
-			productInfo.product = product;
-			res.status(200).json(productInfo);
-		})
-		.catch((err) => {
-			productInfo.errors.push(err);
-			res.status(500).json(productInfo);
-		});
-});
+app.post("/api/google/register", controllers.registerNewUser);
 
-app.get("/api/allproducts/:category", (req, res) => {
-	const category = req.params.category;
-	const availableCategories = {
-		fashion: "fashion",
-		technology: "technology",
-		footwear: "footwear",
-		sports: "sports",
-	};
+app.post("/api/google/login", controllers.loginUser);
 
-	if (!(category in availableCategories)) {
-		return res.status(404).json({
-			response: `${category} is not available in the database`,
-			status: 404,
-		});
-	}
+app.post("/api/comment",  controllers.addProductComments)
 
-	ProductModel.find({ category: category })
-		.sort({ id: -1 })
-		.then((data) => res.status(200).json(data))
-		.catch((err) => res.status(500).json(err));
-});
+app.post("/api/addtocart", controllers.addToCart)
 
-app.post("/api/google/register", async (req, res) => {
-	const ticket = await client.verifyIdToken({
-		idToken: req.body.tokenId,
-		audience: process.env.CLIENT_ID,
-	});
-
-	const { name, email } = ticket.getPayload();
-	const newUser = new UserModel({
-		name,
-		email,
-	});
-	newUser
-		.save()
-		.then((response) => res.status(200).json(response))
-		.catch((err) => res.status(500).json(err));
-});
-
-app.post("/api/google/login", async (req, res) => {
-	const ticket = await client.verifyIdToken({
-		idToken: req.body.tokenId,
-		audience: process.env.CLIENT_ID,
-	});
-
-	const { email } = ticket.getPayload();
-
-	UserModel.findOne({ email: email })
-		.then((response) => res.status(200).json(response))
-		.catch((err) => res.status(500).json(err));
-});
-
-app.post("/api/product/comment",  async (req, res) => {
-	const {comment, product_id, user_id} = req.body
-
-	const newComment = await new CommentModel({
-		product_id : product_id,
-		user_id : user_id,
-		comment : comment,
-	})
-	newComment.save()
-	.then((response) => res.status(200).json(response))
-	.catch((err)=> res.status(500).json(err))
-})
 
 // admin specific route
 app.get("/products", (req, res) => {
