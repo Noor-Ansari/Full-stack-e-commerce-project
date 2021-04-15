@@ -14,13 +14,14 @@ function CommentForm({ product_id }) {
                 return
 			}
 			axios
-				.post("http://localhost:4000/api/product/comment", {
-					user_id: user._id,
-					product_id: product_id,
+				.post("http://localhost:4000/api/comment", {
+					user: user._id,
+					product: product_id,
 					comment: comment,
 				})
 				.then((res) => {
-					setComment("");
+					e.preventDefault()
+					console.log(res)
 				})
 				.catch((err) => console.log(err));
 		} else {

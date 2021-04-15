@@ -14,13 +14,15 @@ const CommentSchema = mongoose.Schema({
         minLength : 3,
         maxLength : 250,
     },
-    product_id : {
-        type : String,
+    product : {
+        type : mongoose.Schema.Types.ObjectId,
         required : true,
+        ref : 'Products'
     },
-    user_id : {
-        type : String,
-        required : true,
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Users',
+        required : true
     },
     rating : {
         type : Number,

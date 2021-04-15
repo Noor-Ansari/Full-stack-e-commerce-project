@@ -22,9 +22,6 @@ const UserSchema = mongoose.Schema({
         minLength : 6,
         maxLength : 30,
     },
-    cart : {
-        type : [String],
-    },
 })
 
 module.exports = mongoose.model("Users", UserSchema)

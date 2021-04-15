@@ -27,7 +27,7 @@ app.get("/api/allproducts/product/:id", controllers.getProductById);
 
 app.get("/api/allproducts/:category", controllers.getProductsByCategory);
 
-app.get("/api/comments/:id", controllers.getProductComments)
+app.get("/api/comments/:product_id", controllers.getProductComments)
 
 app.post("/api/google/register", controllers.registerNewUser);
 

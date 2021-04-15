@@ -25,7 +25,8 @@ function SingleProduct({user, setUser}) {
 	}, [id]);
 
 	const addToCart = () => {
-		axios
+		if (user){
+			axios
 			.post(`http://localhost:4000/api/addtocart`, {
 				product_id: id,
 				user_id : user._id
@@ -35,6 +36,9 @@ function SingleProduct({user, setUser}) {
 				setUser(data)
 			})
 			.catch((err) => console.log(err));
+		}else{
+			alert("You need to login first.")
+		}
 	};
 
 	return (

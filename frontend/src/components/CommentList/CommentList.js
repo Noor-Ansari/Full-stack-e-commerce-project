@@ -6,6 +6,7 @@ import axios from "axios";
 function CommentList({ product_id }) {
 	const [comments, setComments] =  useState([])
 	
+	console.log(comments)
 	useEffect(() => {
 		axios.get(`http://localhost:4000/api/comments/${product_id}`)
 		.then(({data}) => setComments(data))
@@ -14,11 +15,11 @@ function CommentList({ product_id }) {
 
 	return (
 		<div className="classList-wrapper">
-			{comments.map(({text, time_stamp, user_name, id}) => (
+			{comments.map(({comment, time_stamp, user, _id}) => (
 				<Comment
-					key={id}
-					comment={text}
-					userName={user_name}
+					key={_id}
+					comment={comment}
+					userName={user.name}
 					timeStamp={time_stamp}
 				/>
 			))}

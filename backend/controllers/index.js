@@ -3,6 +3,8 @@ const UserModel = require("../model/user");
 const CommentModel = require("../model/comment");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
+const mongoose = require("mongoose");
+const CartModel = require("../model/cart");
 
 module.exports = {
 	getAllProducts: (req, res) => {
@@ -19,21 +21,22 @@ module.exports = {
 			.catch((err) => res.status(500).json(err));
 	},
 	getProductComments: (req, res) => {
-		CommentModel.find({ product_id: req.params.id })
+		CommentModel.find({ product: req.params.product_id })
 			.sort({ time_stamp: -1 })
-			.then((comments) => {
-				let allComments = comments.map((comment) =>
-					UserModel.findById(comment.user_id).then((user) => {
-						return {
-							text: comment.comment,
-							user_name: user.name,
-							time_stamp: comment.time_stamp,
-							id: comment._id,
-						};
-					})
-				);
-				Promise.all(allComments).then((data) => res.status(200).json(data));
-			})
+			.populate("user")
+			.then((comments) => res.status(200).json(comments))
+			.catch((err) => res.status(500).json(err));
+	},
+	addProductComments: async (req, res) => {
+		const { comment, product, user } = req.body;
+		const newComment = await new CommentModel({
+			product: mongoose.Types.ObjectId(product),
+			user: mongoose.Types.ObjectId(user),
+			comment: comment,
+		});
+		newComment
+			.save()
+			.then((response) => res.status(200).json(response))
 			.catch((err) => res.status(500).json(err));
 	},
 	getProductsByCategory: (req, res) => {
@@ -85,31 +88,25 @@ module.exports = {
 			.then((response) => res.status(200).json(response))
 			.catch((err) => res.status(500).json(err));
 	},
-	addProductComments: async (req, res) => {
-		const { comment, product_id, user_id } = req.body;
-
-		const newComment = await new CommentModel({
-			product_id: product_id,
-			user_id: user_id,
-			comment: comment,
-		});
-		newComment
-			.save()
-			.then((response) => res.status(200).json(response))
-			.catch((err) => res.status(500).json(err));
-	},
 	addToCart: (req, res) => {
 		const { user_id, product_id } = req.body;
-		if (user_id && product_id) {
-			UserModel.findById(user_id)
-				.then((response) => {
-					response.cart.push(product_id);
-					response
-						.save()
-						.then((response) => res.status(200).json(response))
-						.catch((err) => res.status(500).json(err));
-				})
-				.catch((err) => res.status(500).json(err));
-		}
+		CartModel.find({ user: user_id })
+			.then((response) => {
+				response.products.map((item) => {
+					if (item.product_id === product_id) {
+						item.quantity += 1;
+						response
+							.save()
+							.then((response) => console.log(response))
+							.catch((err) => console.log(err));
+					}
+				});
+				response.products.push({ product_id: product_id });
+				response
+					.save()
+					.then((response) => console.log(response))
+					.catch((err) => console.log(err));
+			})
+			.catch((err) => console.log(err));
 	},
 };
