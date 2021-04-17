@@ -19,21 +19,20 @@ function SingleProduct({user, setUser}) {
 				setTimeout(() => {
 					setProduct(data);
 					setIsLoading(false);
-				}, 500);
+				}, 100);
 			})
 			.catch((err) => console.log(err));
 	}, [id]);
 
 	const addToCart = () => {
-		if (user){
+		if (user._id){
 			axios
 			.post(`http://localhost:4000/api/addtocart`, {
 				product_id: id,
 				user_id : user._id
 			})
 			.then(({ data }) => {
-				sessionStorage.setItem("user", JSON.stringify(data))
-				setUser(data)
+				console.log(data)
 			})
 			.catch((err) => console.log(err));
 		}else{

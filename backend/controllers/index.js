@@ -1,10 +1,10 @@
 const ProductModel = require("../model/product");
 const UserModel = require("../model/user");
 const CommentModel = require("../model/comment");
+const CartModel = require("../model/cart");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const mongoose = require("mongoose");
-const CartModel = require("../model/cart");
 
 module.exports = {
 	getAllProducts: (req, res) => {
@@ -90,23 +90,46 @@ module.exports = {
 	},
 	addToCart: (req, res) => {
 		const { user_id, product_id } = req.body;
-		CartModel.find({ user: user_id })
-			.then((response) => {
-				response.products.map((item) => {
-					if (item.product_id === product_id) {
-						item.quantity += 1;
-						response
-							.save()
-							.then((response) => console.log(response))
-							.catch((err) => console.log(err));
-					}
-				});
-				response.products.push({ product_id: product_id });
-				response
+		CartModel.findOne({'user' : user_id})
+		.exec()
+		.then((doc) => {
+				if (doc) {
+				const item = doc.products.filter(product => String(product.product_id)===product_id)
+				
+				if (item.length){
+					
+					item[0].quantity += 1
+					doc.save()
+					.then(data => {
+						
+						res.status(200).json(data)
+					}).catch(err => {
+						
+						res.status(500).json({error : err})
+					})
+				}else{
+					
+					doc.products.push({product_id : product_id})
+					doc
 					.save()
-					.then((response) => console.log(response))
-					.catch((err) => console.log(err));
+					.then(data => {
+						res.status(200).json(data)
+					}).catch(err => {
+						res.status(500).json({error : err})
+					})
+				}
+				} else {
+					
+					const newCart = new CartModel({
+						user: user_id,
+						products: { product_id: product_id },
+					});
+					newCart
+						.save()
+						.then((doc) => res.status(200).json(doc))
+						.catch((err) => res.status(500).json({error : err}));
+				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => res.status(500).json({error : err}));
 	},
 };

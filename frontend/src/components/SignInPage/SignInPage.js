@@ -11,6 +11,7 @@ function SignInPage({setUser}) {
                     tokenId : response.tokenId
             })
             .then(({data}) => {
+              console.log(data)
                 sessionStorage.setItem('user', JSON.stringify(data));
                 setUser(data)
               history.push("/")

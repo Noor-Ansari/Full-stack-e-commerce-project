@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 function CartPage({ user, setUser }) {
 	const [cartProducts, setCartProducts] = useState([]);
-
 	return (
 		<>
 			{cartProducts.map((product) => (

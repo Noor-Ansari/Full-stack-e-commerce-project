@@ -4,14 +4,16 @@ require("../db/db");
 const CartSchema = mongoose.Schema({
     user : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'Users',
-        required : true
+        required : true,
+        ref : 'Users'
     },
 	products: [
         {
-            type : mongoose.Schema.Types.ObjectId,
-            product_id : mongoose.Schema.Types.ObjectId,
-            ref : 'Products',
+            product_id : {
+                type : mongoose.Schema.Types.ObjectId,
+                required : true,
+                ref : 'Products',
+            },
             quantity : {
                 type : Number,
                 default : 1,

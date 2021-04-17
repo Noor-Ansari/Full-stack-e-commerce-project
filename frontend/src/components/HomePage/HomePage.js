@@ -15,7 +15,7 @@ function HomePage() {
 				setTimeout(() => {
 					setProducts(data);
 					setIsLoading(false);
-				}, 1000);
+				}, 100);
 			})
 			.catch((err) => console.log(err));
 	}, []);
