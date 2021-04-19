@@ -31,7 +31,7 @@ function Navbar({user}) {
 						<AccountCircleOutlinedIcon />
 						{userLabel}
 					</Link>
-					<Link to="#" className='nav-icon'>
+					<Link to="/user/cart" className='nav-icon'>
 						<LocalMallOutlinedIcon />
 						Your cart
 					</Link>

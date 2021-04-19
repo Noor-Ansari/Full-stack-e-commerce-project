@@ -9,9 +9,8 @@ import React, {useState} from "react";
 import CartPage from "./components/CartPage/CartPage";
 
 function App() {
-	
 	const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
-	
+	console.log(user)
 	return (
 		<Router>
 			<div className='App'>

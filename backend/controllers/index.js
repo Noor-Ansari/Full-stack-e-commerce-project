@@ -88,6 +88,14 @@ module.exports = {
 			.then((response) => res.status(200).json(response))
 			.catch((err) => res.status(500).json(err));
 	},
+	getCart : (req, res) => {
+		const user = req.params.id
+		CartModel.findOne({user : user})
+		.populate({path : 'products', populate : { path : 'product_id'}})
+		.exec()
+		.then((data) => res.status(200).json(data))
+		.catch((err) => res.status(500).json({error : err}))
+	},
 	addToCart: (req, res) => {
 		const { user_id, product_id } = req.body;
 		CartModel.findOne({'user' : user_id})

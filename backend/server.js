@@ -35,6 +35,8 @@ app.post("/api/google/login", controllers.loginUser);
 
 app.post("/api/comment",  controllers.addProductComments)
 
+app.get("/api/getcart/:id", controllers.getCart)
+
 app.post("/api/addtocart", controllers.addToCart)
 
 

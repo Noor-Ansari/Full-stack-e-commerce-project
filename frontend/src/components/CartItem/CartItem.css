@@ -1,0 +1,26 @@
+.cart-product-image {
+	width: 200px;
+	height: 200px;
+}
+
+.cart-product-card {
+	display: flex;
+	justify-content: space-between;
+	width: 60%;
+	background-color: #fff;
+	margin: 2rem 0;
+	padding: 2rem;
+}
+
+.cart-product-name {
+	font-size: 2.4rem;
+}
+
+.cart-product-description {
+	font-size: 1.2rem;
+	margin-top: 2rem;
+}
+
+.cart-product-price {
+	font-size: 1.5rem;
+}
