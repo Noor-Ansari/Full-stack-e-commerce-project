@@ -1,0 +1,16 @@
+.cart-heading {
+	background-color: #7b113a;
+	padding: 1rem;
+	color: #fff;
+	font-size: 2rem;
+}
+.cart-items-wrapper {
+	margin-top: 4rem;
+	display: flex;
+	width: 100%;
+	justify-content: space-evenly;
+}
+
+.cart-items-list {
+	width: 60%;
+}

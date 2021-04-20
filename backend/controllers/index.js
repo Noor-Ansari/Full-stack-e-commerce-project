@@ -92,6 +92,7 @@ module.exports = {
 		const user = req.params.id
 		CartModel.findOne({user : user})
 		.populate({path : 'products', populate : { path : 'product_id'}})
+		.sort({added_at : -1})
 		.exec()
 		.then((data) => res.status(200).json(data))
 		.catch((err) => res.status(500).json({error : err}))

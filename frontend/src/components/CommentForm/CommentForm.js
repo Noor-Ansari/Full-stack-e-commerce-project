@@ -21,7 +21,6 @@ function CommentForm({ product_id }) {
 				})
 				.then((res) => {
 					e.preventDefault()
-					console.log(res)
 				})
 				.catch((err) => console.log(err));
 		} else {

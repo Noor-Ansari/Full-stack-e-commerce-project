@@ -9,6 +9,10 @@ const CartSchema = mongoose.Schema({
     },
 	products: [
         {
+            added_at : {
+                type : Date,
+                default : Date.now
+            },
             product_id : {
                 type : mongoose.Schema.Types.ObjectId,
                 required : true,

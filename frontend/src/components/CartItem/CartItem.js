@@ -14,9 +14,9 @@ function CartItem({ product, quantity }) {
 			<div className='right-cart'>
 				<h3 className='cart-product-name'>{product.name}</h3>
 				<p className='cart-product-description'>{product.description}</p>
-				<p className='cart-product-price'>Quantity{quantity}</p>
+				<p className='cart-product-price'><strong>Quantity :</strong>{quantity}</p>
 				<div className='cart-product-links'>
-					<button className='cart-product-button'>Remove from cart</button>
+					<button className='cart-product-button'>Remove</button>
 					<button className='cart-product-button' >
 						Buy Now
 					</button>
