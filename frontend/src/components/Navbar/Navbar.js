@@ -4,9 +4,10 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import RoomOutlinedIcon from "@material-ui/icons/RoomOutlined";
 import React from "react";
-import { Link  } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-function Navbar({user}) {
+function Navbar({ user }) {
 	const userLabel = user?.name ? user.name : "Login / Register"
 	return (
 		<nav>
@@ -70,4 +71,10 @@ function Navbar({user}) {
 	);
 }
 
-export default Navbar;
+const mapStateToProps = (state) => {
+	return {
+		user : state.user
+	}
+}
+
+export default connect(mapStateToProps)(Navbar)

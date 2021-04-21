@@ -3,8 +3,10 @@ import { GoogleLogin } from "react-google-login";
 import axios from "axios"
 import { useHistory, Link } from 'react-router-dom';
 import "./SignInPage.css"
+import { connect } from "react-redux";
+import { addUser } from "../../redux/actionCreators";
 
-function SignInPage({setUser}) {
+function SignInPage({addUserToState}) {
    const history = useHistory()
     const handleRegister = response => {
             axios.post("http://localhost:4000/api/google/register", {
@@ -13,7 +15,7 @@ function SignInPage({setUser}) {
             .then(({data}) => {
               console.log(data)
                 sessionStorage.setItem('user', JSON.stringify(data));
-                setUser(data)
+                addUserToState(data)
               history.push("/")
             })
             .catch((err) => console.log(err))
@@ -26,7 +28,7 @@ function SignInPage({setUser}) {
         })
         .then(({data}) => {
             sessionStorage.setItem('user', JSON.stringify(data));
-            setUser(data)
+            addUserToState(data)
             history.push("/")
         })
         .catch((err) => console.log(err))
@@ -59,4 +61,13 @@ function SignInPage({setUser}) {
 	);
 }
 
-export default SignInPage;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addUserToState : (user) => dispatch(addUser(user))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SignInPage)
+
+
