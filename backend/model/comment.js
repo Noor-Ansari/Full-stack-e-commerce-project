@@ -11,8 +11,8 @@ const CommentSchema = mongoose.Schema({
         required : true,
         trim : true,
         lowercase : true,
-        minLength : 3,
-        maxLength : 250,
+        minLength : [3, 'Comment should be atleast 5 characters long.'],
+        maxLength : [200, 'Comment should be atmost 200 characters long.'],
     },
     product : {
         type : mongoose.Schema.Types.ObjectId,

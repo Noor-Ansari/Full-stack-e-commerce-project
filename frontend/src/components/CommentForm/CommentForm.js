@@ -1,11 +1,10 @@
 import "./CommentForm.css";
 import axios from "axios";
 import React, { useState } from "react";
+import {connect} from "react-redux"
 
-function CommentForm({ product_id }) {
+function CommentForm({ product_id , user}) {
 	const [comment, setComment] = useState("");
-	const user = JSON.parse(sessionStorage.getItem("user"));
-	
 	const handleClick = (e) => {
 		if (user) {
 			if (!comment) {
@@ -19,9 +18,7 @@ function CommentForm({ product_id }) {
 					product: product_id,
 					comment: comment,
 				})
-				.then((res) => {
-					e.preventDefault()
-				})
+				.then((res) => alert('Commented successfully'))
 				.catch((err) => console.log(err));
 		} else {
 			alert("Please login first");
@@ -44,4 +41,10 @@ function CommentForm({ product_id }) {
 	);
 }
 
-export default CommentForm;
+const mapStateToProps = (state) => {
+	return {
+		user : state.user
+	}
+}
+
+export default connect(mapStateToProps)(CommentForm)

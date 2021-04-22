@@ -6,8 +6,9 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Loader from "react-loader-spinner";
 import CommentList from "../CommentList/CommentList";
 import CommentForm from "../CommentForm/CommentForm";
+import {connect} from "react-redux"
 
-function SingleProduct({user, setUser}) {
+function SingleProduct({user}) {
 	const [product, setProduct] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const { id } = useParams();
@@ -25,15 +26,13 @@ function SingleProduct({user, setUser}) {
 	}, [id]);
 
 	const addToCart = () => {
-		if (user._id){
+		if (user){
 			axios
 			.post(`http://localhost:4000/api/addtocart`, {
 				product_id: id,
 				user_id : user._id
 			})
-			.then(({ data }) => {
-				console.log(data)
-			})
+			.then(() => alert(`${product.name} added to your cart.`))
 			.catch((err) => console.log(err));
 		}else{
 			alert("You need to login first.")
@@ -81,4 +80,10 @@ function SingleProduct({user, setUser}) {
 	);
 }
 
-export default SingleProduct;
+const mapStateToProps = (state) => {
+	return {
+		user : state.user
+	}
+}
+
+export default connect(mapStateToProps)(SingleProduct)

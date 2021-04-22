@@ -37,7 +37,7 @@ module.exports = {
 		newComment
 			.save()
 			.then((response) => res.status(200).json(response))
-			.catch((err) => res.status(500).json(err));
+			.catch((err) => res.status(500).json({ error: err }));
 	},
 	getProductsByCategory: (req, res) => {
 		const category = req.params.category;
@@ -88,47 +88,47 @@ module.exports = {
 			.then((response) => res.status(200).json(response))
 			.catch((err) => res.status(500).json(err));
 	},
-	getCart : (req, res) => {
-		const user = req.params.id
-		CartModel.findOne({user : user})
-		.populate({path : 'products', populate : { path : 'product_id'}})
-		.sort({added_at : -1})
-		.exec()
-		.then((data) => res.status(200).json(data))
-		.catch((err) => res.status(500).json({error : err}))
+	getCart: (req, res) => {
+		const user = req.params.id;
+		CartModel.findOne({ user: user })
+			.populate({ path: "products", populate: { path: "product_id" } })
+			.sort({ added_at: -1 })
+			.exec()
+			.then((data) => res.status(200).json(data))
+			.catch((err) => res.status(500).json({ error: err }));
 	},
 	addToCart: (req, res) => {
 		const { user_id, product_id } = req.body;
-		CartModel.findOne({'user' : user_id})
-		.exec()
-		.then((doc) => {
+		CartModel.findOne({ user: user_id })
+			.exec()
+			.then((doc) => {
 				if (doc) {
-				const item = doc.products.filter(product => String(product.product_id)===product_id)
-				
-				if (item.length){
-					
-					item[0].quantity += 1
-					doc.save()
-					.then(data => {
-						
-						res.status(200).json(data)
-					}).catch(err => {
-						
-						res.status(500).json({error : err})
-					})
-				}else{
-					
-					doc.products.push({product_id : product_id})
-					doc
-					.save()
-					.then(data => {
-						res.status(200).json(data)
-					}).catch(err => {
-						res.status(500).json({error : err})
-					})
-				}
+					const item = doc.products.filter(
+						(product) => String(product.product_id) === product_id
+					);
+
+					if (item.length) {
+						item[0].quantity += 1;
+						doc
+							.save()
+							.then((data) => {
+								res.status(200).json(data);
+							})
+							.catch((err) => {
+								res.status(500).json({ error: err });
+							});
+					} else {
+						doc.products.push({ product_id: product_id });
+						doc
+							.save()
+							.then((data) => {
+								res.status(200).json(data);
+							})
+							.catch((err) => {
+								res.status(500).json({ error: err });
+							});
+					}
 				} else {
-					
 					const newCart = new CartModel({
 						user: user_id,
 						products: { product_id: product_id },
@@ -136,9 +136,28 @@ module.exports = {
 					newCart
 						.save()
 						.then((doc) => res.status(200).json(doc))
-						.catch((err) => res.status(500).json({error : err}));
+						.catch((err) => res.status(500).json({ error: err }));
 				}
 			})
-			.catch((err) => res.status(500).json({error : err}));
+			.catch((err) => res.status(500).json({ error: err }));
+	},
+	removeFromCart: (req, res) => {
+		const { user_id, product_id } = req.body;
+		CartModel.findOne({ user: user_id })
+			.exec()
+			.then((doc) => {
+				if (doc && doc.products) {
+					newCart = doc.products.filter(
+						(product) => String(product.product_id) !== product_id
+					);
+
+					doc.products = newCart;
+					doc
+						.save()
+						.then((response) => res.status(200).json(response))
+						.catch((err) => res.status(500).json({ error: err }));
+				}
+			})
+			.catch((err) => res.status(500).json({ error: err }));
 	},
 };

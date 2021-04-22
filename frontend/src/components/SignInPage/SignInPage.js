@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 import { addUser } from "../../redux/actionCreators";
 
 function SignInPage({addUserToState}) {
-   const history = useHistory()
+  const history = useHistory()
+  
     const handleRegister = response => {
             axios.post("http://localhost:4000/api/google/register", {
                     tokenId : response.tokenId

@@ -1,7 +1,7 @@
 import {ADD_USER, ADD_CART} from "./Types"
 
 const initialState = {
-    user: "",
+    user: JSON.parse(sessionStorage.getItem("user")),
     cart : [],
 }
 
@@ -11,6 +11,11 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user : action.payload
+            }
+        case ADD_CART:
+            return {
+                ...state,
+                cart : action.payload
             }
         default:
             return state

@@ -39,6 +39,8 @@ app.get("/api/getcart/:id", controllers.getCart)
 
 app.post("/api/addtocart", controllers.addToCart)
 
+app.post("/api/removefromcart", controllers.removeFromCart)
+
 
 // admin specific route
 app.get("/products", (req, res) => {
