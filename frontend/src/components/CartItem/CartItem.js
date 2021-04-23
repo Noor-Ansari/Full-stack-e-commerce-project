@@ -2,21 +2,16 @@ import axios from "axios";
 import React from "react";
 import "./CartItem.css";
 import { connect } from "react-redux";
-import { addCart } from "../../redux/actionCreators";
+import { removeFromCart } from "../../redux/actionCreators";
 
-function CartItem({ product, quantity, user, addCart }) {
+function CartItem({ product, quantity, user, removeProduct }) {
 	const removeFromCart = () => {
 		axios
 			.post("http://localhost:4000/api/removefromcart", {
 				user_id: user._id,
 				product_id: product._id,
 			})
-			.then(() => {
-				axios
-					.get(`http://localhost:4000/api/getcart/${user._id}`)
-					.then(({ data }) => addCart(data.products))
-					.catch((err) => console.log(err));
-			})
+			.then(({ data }) => removeProduct(data.removedProduct))
 			.catch((err) => console.log(err));
 	};
 
@@ -55,7 +50,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addCart: (cart) => dispatch(addCart(cart)),
+		removeProduct: (removedProduct) => dispatch(removeFromCart(removedProduct)),
 	};
 };
 

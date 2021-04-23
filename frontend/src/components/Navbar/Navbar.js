@@ -9,6 +9,9 @@ import { connect } from "react-redux";
 
 function Navbar({ user }) {
 	const userLabel = user?.name ? user.name : "Login / Register"
+
+	const secondRow = [{link : "/", label : "Home"},{link : "/allproducts/fashion", label : "Fashion"}, {link : "/allproducts/sports", label : "Sports"}, {link : "/allproducts/technology", label : "Technology"}, {link : "/allproducts/footwear", label : "Footwears"} ]
+
 	return (
 		<nav>
 			<div className='first-row'>
@@ -40,31 +43,13 @@ function Navbar({ user }) {
 			</div>
 			<div className='second-row'>
 				<ul>
-					<li>
-						<Link to='/' className='nav-links'>
-							Home
+					{secondRow.map(item => (
+						<li>
+						<Link to={item.link} className='nav-links'>
+							{item.label}
 						</Link>
 					</li>
-					<li>
-						<Link to='/allproducts/fashion' className='nav-links'>
-							Fashion
-						</Link>
-					</li>
-					<li>
-						<Link to='/allproducts/sports' className='nav-links'>
-							Sports
-						</Link>
-					</li>
-					<li>
-						<Link to='/allproducts/technology' className='nav-links'>
-							Technology
-						</Link>
-					</li>
-					<li>
-						<Link to='/allproducts/footwear' className='nav-links'>
-							Footwear
-						</Link>
-					</li>
+					))}
 				</ul>
 			</div>
 		</nav>

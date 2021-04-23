@@ -1,4 +1,4 @@
-import {ADD_USER, ADD_CART} from "./Types"
+import {ADD_USER, ADD_CART, REMOVE_PRODUCT, ADD_PRODUCTS} from "./Types"
 
 export const addUser = (user) => {
     return {
@@ -14,3 +14,17 @@ export const addCart = (cart) => {
     }
 }
 
+export const removeFromCart = (removedProduct) => {
+    return {
+        type: REMOVE_PRODUCT,
+        payload : removedProduct
+    }
+}
+
+
+export const addProducts = (products) => {
+    return {
+        type: ADD_PRODUCTS,
+        payload : products
+    }
+}

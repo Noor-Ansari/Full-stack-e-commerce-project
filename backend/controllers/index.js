@@ -147,6 +147,10 @@ module.exports = {
 			.exec()
 			.then((doc) => {
 				if (doc && doc.products) {
+					[removedProduct] = doc.products.filter(
+						(product) => String(product.product_id) === product_id
+					);
+
 					newCart = doc.products.filter(
 						(product) => String(product.product_id) !== product_id
 					);
@@ -154,7 +158,11 @@ module.exports = {
 					doc.products = newCart;
 					doc
 						.save()
-						.then((response) => res.status(200).json(response))
+						.then((response) =>
+							res
+								.status(200)
+								.json({ removedProduct: removedProduct.product_id })
+						)
 						.catch((err) => res.status(500).json({ error: err }));
 				}
 			})

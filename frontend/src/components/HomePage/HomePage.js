@@ -3,19 +3,18 @@ import Products from "../Products/Products";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import "./HomePage.css";
+import { addProducts } from "../../redux/actionCreators";
+import { connect } from "react-redux";
 
-function HomePage() {
-	const [products, setProducts] = useState([]);
+function HomePage({ addProducts }) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		axios
 			.get("http://localhost:4000/api/allproducts/")
 			.then(({ data }) => {
-				setTimeout(() => {
-					setProducts(data);
-					setIsLoading(false);
-				}, 100);
+				addProducts(data);
+				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -27,10 +26,16 @@ function HomePage() {
 					<Loader type='Oval' color='#fff' height={100} width={100} />
 				</div>
 			) : (
-				<Products products={products} />
+				<Products />
 			)}
 		</>
 	);
 }
 
-export default HomePage;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addProducts: (products) => dispatch(addProducts(products)),
+	};
+};
+
+export default connect(null, mapDispatchToProps)(HomePage);

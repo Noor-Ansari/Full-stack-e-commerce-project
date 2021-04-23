@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import "./CategoriesPage.css";
+import { connect } from "react-redux";
+import { addProducts } from "../../redux/actionCreators";
 
-function CategoriesPage() {
-	const [products, setProducts] = useState([]);
+function CategoriesPage({ addProducts }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const { category } = useParams();
 
@@ -14,10 +15,8 @@ function CategoriesPage() {
 		axios
 			.get(`http://localhost:4000/api/allproducts/${category}`)
 			.then(({ data }) => {
-				setTimeout(() => {
-					setProducts(data);
-					setIsLoading(false);
-				}, 100);
+				addProducts(data);
+				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
 	}, [category]);
@@ -29,10 +28,16 @@ function CategoriesPage() {
 					<Loader type='Oval' color='#fff' height={100} width={100} />
 				</div>
 			) : (
-				<Products products={products} />
+				<Products />
 			)}
 		</>
 	);
 }
 
-export default CategoriesPage;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addProducts: (products) => dispatch(addProducts(products)),
+	};
+};
+
+export default connect(null, mapDispatchToProps)(CategoriesPage);

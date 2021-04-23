@@ -17,24 +17,35 @@ function CartPage({ user, cart, addCart }) {
 
 	return (
 		<div className='cart-items-wrapper'>
-			{cart.length ? (
-				<>
-					<div className='cart-items-list'>
-						<h3 className='cart-heading'>Your cart ({cart.length})</h3>
-						{cart.map((cartProduct) => (
-							<CartItem
-								key={cartProduct._id}
-								product={cartProduct.product_id}
-								quantity={cartProduct.quantity}
-							/>
-						))}
+			{user ? (
+				cart.length ? (
+					<>
+						<div className='cart-items-list'>
+							<h3 className='cart-heading'>Your cart ({cart.length})</h3>
+							{cart.map((cartProduct) => (
+								<CartItem
+									key={cartProduct._id}
+									product={cartProduct.product_id}
+									quantity={cartProduct.quantity}
+								/>
+							))}
+						</div>
+						<CartSummary cartProducts={cart} />
+					</>
+				) : (
+					<div className='notification'>
+						<h1 className='empty-cart-notification'>You cart is empty</h1>
+						<Link to='/' className='home-link'>
+							Add products
+						</Link>
 					</div>
-					<CartSummary cartProducts={cart} />
-				</>
+				)
 			) : (
 				<div className='notification'>
-					<h1 className='empty-cart-notification'>You cart is empty</h1>
-					<Link to='/' className="home-link">Add products</Link>
+					<h1 className='empty-cart-notification'>Sign in to view your cart</h1>
+					<Link to='/signin' className='home-link'>
+						Sign in
+					</Link>
 				</div>
 			)}
 		</div>

@@ -1,6 +1,7 @@
 import "./Products.css";
 import React  from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux"
 
 function Products({ products }) {
 	return (
@@ -26,4 +27,10 @@ function Products({ products }) {
 	);
 }
 
-export default Products;
+const mapStateToProps = (state) => {
+	return {
+		products : state.products
+	}
+}
+
+export default connect(mapStateToProps)(Products)

@@ -6,36 +6,34 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Loader from "react-loader-spinner";
 import CommentList from "../CommentList/CommentList";
 import CommentForm from "../CommentForm/CommentForm";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 
-function SingleProduct({user}) {
+function SingleProduct({ user }) {
 	const [product, setProduct] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const { id } = useParams();
-	
+
 	useEffect(() => {
 		axios
 			.get(`http://localhost:4000/api/allproducts/product/${id}`)
 			.then(({ data }) => {
-				setTimeout(() => {
-					setProduct(data);
-					setIsLoading(false);
-				}, 100);
+				setProduct(data);
+				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
 	}, [id]);
 
 	const addToCart = () => {
-		if (user){
+		if (user) {
 			axios
-			.post(`http://localhost:4000/api/addtocart`, {
-				product_id: id,
-				user_id : user._id
-			})
-			.then(() => alert(`${product.name} added to your cart.`))
-			.catch((err) => console.log(err));
-		}else{
-			alert("You need to login first.")
+				.post(`http://localhost:4000/api/addtocart`, {
+					product_id: id,
+					user_id: user._id,
+				})
+				.then(() => alert(`${product.name} added to your cart.`))
+				.catch((err) => console.log(err));
+		} else {
+			alert("You need to login first.");
 		}
 	};
 
@@ -82,8 +80,8 @@ function SingleProduct({user}) {
 
 const mapStateToProps = (state) => {
 	return {
-		user : state.user
-	}
-}
+		user: state.user,
+	};
+};
 
-export default connect(mapStateToProps)(SingleProduct)
+export default connect(mapStateToProps)(SingleProduct);
