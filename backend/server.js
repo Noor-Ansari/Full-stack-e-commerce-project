@@ -29,9 +29,13 @@ app.get("/api/allproducts/:category", controllers.getProductsByCategory);
 
 app.get("/api/comments/:product_id", controllers.getProductComments)
 
-app.post("/api/google/register", controllers.registerNewUser);
+app.post("/api/google/register", controllers.registerWithGoogle);
 
-app.post("/api/google/login", controllers.loginUser);
+app.post("/api/google/login", controllers.loginWithGoogle);
+
+app.post("/api/register", controllers.customeRegister);
+
+app.post("/api/login", controllers.customeLogin);
 
 app.post("/api/comment",  controllers.addProductComments)
 

@@ -14,7 +14,6 @@ function SignInPage({addUserToState}) {
                     tokenId : response.tokenId
             })
             .then(({data}) => {
-              console.log(data)
                 sessionStorage.setItem('user', JSON.stringify(data));
                 addUserToState(data)
               history.push("/")

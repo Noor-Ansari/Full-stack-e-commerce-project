@@ -5,6 +5,7 @@ const CartModel = require("../model/cart");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const mongoose = require("mongoose");
+const bcrypt  = require("bcrypt")
 
 module.exports = {
 	getAllProducts: (req, res) => {
@@ -60,23 +61,33 @@ module.exports = {
 			.then((data) => res.status(200).json(data))
 			.catch((err) => res.status(500).json(err));
 	},
-	registerNewUser: async (req, res) => {
+	registerWithGoogle: async (req, res) => {
 		const ticket = await client.verifyIdToken({
 			idToken: req.body.tokenId,
 			audience: process.env.CLIENT_ID,
 		});
 
 		const { name, email } = ticket.getPayload();
-		const newUser = new UserModel({
-			name,
-			email,
-		});
-		newUser
-			.save()
-			.then((response) => res.status(200).json(response))
-			.catch((err) => res.status(500).json(err));
+
+		UserModel.findOne({ email: email })
+			.exec()
+			.then((doc) => {
+				if (doc) {
+					res.status(200).json({ info: "Email already exists." })
+				} else {
+					const newUser = new UserModel({
+						name,
+						email,
+					});
+					newUser
+						.save()
+						.then((response) => res.status(200).json(response))
+						.catch((err) => res.status(500).json(err));
+				}
+			})
+			.catch((err) => res.status(500).json(err))
 	},
-	loginUser: async (req, res) => {
+	loginWithGoogle: async (req, res) => {
 		const ticket = await client.verifyIdToken({
 			idToken: req.body.tokenId,
 			audience: process.env.CLIENT_ID,
@@ -85,8 +96,53 @@ module.exports = {
 		const { email } = ticket.getPayload();
 
 		UserModel.findOne({ email: email })
-			.then((response) => res.status(200).json(response))
+			.exec()
+			.then((doc) => {
+				if (!doc) {
+					res.status(200).json({ info: "Email does not exist." })
+				} else {
+					res.status(200).json(doc)
+				}
+			})
 			.catch((err) => res.status(500).json(err));
+	},
+	customeLogin: (req, res) => {
+		const { email, password } = req.body
+		UserModel.findOne({ email: email })
+			.exec()
+			.then(async (doc) => {
+				if (!doc) {
+					res.status(200).json({ info: "Email does not exist." })
+				}
+				const hashedPassword = doc.password || ""
+				const result = await bcrypt.compare(password, hashedPassword)
+				if (result) {
+					res.status(200).json(doc)
+				} else {
+					res.status(200).json({ info: "Password does not match." })
+				}
+			})
+			.catch((err) => res.status(500).json(err))
+
+	},
+	customeRegister: (req, res) => {
+		const { name, email, password, confirmPassword } = req.body
+		console.log(req.body)
+		UserModel.findOne({ email : email})
+			.exec()
+			.then(async (doc) => {
+				if (doc) {
+					res.status(200).json({ info: "Email already exists." })
+				} else {
+					const hashedPassword = await bcrypt.hash(password, 10)
+					newUser = new UserModel({ name: name, email: email, password: hashedPassword })
+					newUser
+						.save()
+						.then((response) => res.status(200).json(response))
+						.catch((err) => res.status(500).json(err))
+				}
+			})
+		.catch((err) => res.status(500).json(err))
 	},
 	getCart: (req, res) => {
 		const user = req.params.id;

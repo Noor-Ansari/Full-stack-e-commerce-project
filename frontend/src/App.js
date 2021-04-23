@@ -7,14 +7,20 @@ import SignInPage from "./components/SignInPage/SignInPage";
 import Layout from "./components/Layout/Layout";
 import React from "react";
 import CartPage from "./components/CartPage/CartPage";
+import LogInForm from "./components/LogIn/LogIn";
+import RegisterForm from "./components/Register/Register";
+
 
 function App() {
 	return (
 		<Router>
 			<div className='App'>
 				<Switch>
-					<Route path='/signin'>
-						<SignInPage />
+					<Route path='/login'>
+						<LogInForm />
+					</Route>
+					<Route path='/register'>
+						<RegisterForm />
 					</Route>
 					<Layout>
 						<Switch>
