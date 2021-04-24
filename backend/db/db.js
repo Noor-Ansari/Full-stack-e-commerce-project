@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 require("../.env");
 
-const URI = "mongodb+srv://noor_mohammad:civil.er@backend.nzdpm.mongodb.net/shoppingplaza?retryWrites=true&w=majority"
-
+const URI =  `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@backend.nzdpm.mongodb.net/shoppingplaza?retryWrites=true&w=majority`
 
 mongoose.connect(URI, { useNewUrlParser: true,
   useFindAndModify: false,
