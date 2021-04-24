@@ -1,4 +1,4 @@
-import { ADD_USER, ADD_CART, REMOVE_PRODUCT,  ADD_PRODUCTS } from "./Types";
+import { ADD_USER, ADD_CART, REMOVE_PRODUCT,  ADD_PRODUCTS, REMOVE_USER } from "./Types";
 
 const initialState = {
 	user: JSON.parse(sessionStorage.getItem("user")) || "",
@@ -12,7 +12,13 @@ const rootReducer = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload,
-            };
+			};
+		case REMOVE_USER:
+			sessionStorage.removeItem("user")
+			return {
+				...state,
+				user : ""	
+		}
         case ADD_PRODUCTS:
            return {
                ...state,

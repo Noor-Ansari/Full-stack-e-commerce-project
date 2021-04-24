@@ -5,7 +5,7 @@ import axios from "axios";
 
 function CommentList({ product_id }) {
 	const [comments, setComments] =  useState([])
-	
+	console.log(comments)
 	useEffect(() => {
 		axios.get(`http://localhost:4000/api/comments/${product_id}`)
 		.then(({data}) => setComments(data))
@@ -18,7 +18,7 @@ function CommentList({ product_id }) {
 				<Comment
 					key={_id}
 					comment={comment}
-					userName={user.name}
+					userName={user?.name}
 					timeStamp={time_stamp}
 				/>
 			))}

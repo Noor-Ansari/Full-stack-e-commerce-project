@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Products from "../Products/Products";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import "./CategoriesPage.css";
@@ -10,13 +10,19 @@ import { addProducts } from "../../redux/actionCreators";
 function CategoriesPage({ addProducts }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const { category } = useParams();
+	const history = useHistory()
 
 	useEffect(() => {
 		axios
 			.get(`http://localhost:4000/api/allproducts/${category}`)
 			.then(({ data }) => {
-				addProducts(data);
-				setIsLoading(false);
+				if (data.info) {
+					alert(`${data.info}`)
+					history.push("/")
+				} else {
+					addProducts(data)
+				}
+				setIsLoading(false)
 			})
 			.catch((err) => console.log(err));
 	}, [category]);

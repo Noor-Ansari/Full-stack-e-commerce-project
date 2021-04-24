@@ -4,6 +4,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const controllers = require("./controllers/index")
+const ProductModel = require("./model/product");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {

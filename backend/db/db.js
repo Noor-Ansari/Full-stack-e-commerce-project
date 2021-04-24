@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 require("../.env");
 
-const URI = "mongodb://localhost/shoppingplaza";
+const URI = "mongodb+srv://noor_mohammad:civil.er@backend.nzdpm.mongodb.net/shoppingplaza?retryWrites=true&w=majority"
 
-mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true });
+
+mongoose.connect(URI, { useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.on("connected", () => {

@@ -8,11 +8,14 @@ import { addCart } from "../../redux/actionCreators";
 import { Link } from "react-router-dom";
 
 function CartPage({ user, cart, addCart }) {
+
 	useEffect(() => {
-		axios
+		if (user) {
+			axios
 			.get(`http://localhost:4000/api/getcart/${user._id}`)
-			.then(({ data }) => addCart(data.products))
-			.catch((err) => console.log(err));
+			.then(({ data }) => addCart(data.products || []))
+			.catch((err) => console.log(err));	
+		}
 	}, [user, addCart]);
 
 	return (
@@ -42,9 +45,9 @@ function CartPage({ user, cart, addCart }) {
 				)
 			) : (
 				<div className='notification'>
-					<h1 className='empty-cart-notification'>Sign in to view your cart</h1>
-					<Link to='/signin' className='home-link'>
-						Sign in
+					<h1 className='empty-cart-notification'>Login to view your cart</h1>
+					<Link to='/login' className='home-link'>
+						Login
 					</Link>
 				</div>
 			)}
