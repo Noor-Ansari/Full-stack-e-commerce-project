@@ -38,7 +38,10 @@
 
 .product-name {
 	font-size: 3rem;
+	text-transform: capitalize;
 }
+
+
 
 .product-price {
 	font-size: 1.5rem;
@@ -52,6 +55,11 @@
 	line-height: 1.5;
 	margin: 2rem 0;
 }
+
+.product-description::first-letter{
+	text-transform: uppercase;
+}
+
 
 .product-links {
 	position: absolute;

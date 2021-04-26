@@ -13,7 +13,7 @@ function CartPage({ user, cart, addCart }) {
 		if (user) {
 			axios
 			.get(`http://localhost:4000/api/getcart/${user._id}`)
-			.then(({ data }) => addCart(data.products || []))
+			.then(({ data }) => addCart(data?.products || []))
 			.catch((err) => console.log(err));	
 		}
 	}, [user, addCart]);

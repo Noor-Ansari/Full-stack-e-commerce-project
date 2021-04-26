@@ -98,7 +98,7 @@ module.exports = {
 			.exec()
 			.then((doc) => {
 				if (!doc) {
-					res.status(404).json({ info: "Email does not exist." });
+					res.status(200).json({ info: "Email does not exist." });
 				} else {
 					res.status(200).json(doc);
 				}

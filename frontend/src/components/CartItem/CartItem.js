@@ -19,7 +19,7 @@ function CartItem({ product, quantity, user, removeProduct }) {
 		<div className='cart-product-card'>
 			<div className='left-cart'>
 				<img
-					src={`data:image/jpeg;base64,${product.image}`}
+					src={`http://localhost:4000/${product.image}`}
 					alt={product.name}
 					className='cart-product-image'
 				/>

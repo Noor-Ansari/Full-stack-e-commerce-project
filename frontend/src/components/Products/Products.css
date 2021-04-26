@@ -39,6 +39,7 @@
 	left: 20%;
 	top: -1rem;
 	font-size: 1.2rem;
+	text-transform: capitalize;
 }
 
 .card-link {

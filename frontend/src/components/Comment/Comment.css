@@ -26,6 +26,10 @@
 	margin-top: 1rem;
 }
 
+.comment-text::first-letter{
+	text-transform: uppercase;
+}
+
 .username {
 	font-size: 0.8rem;
 	color: #1597bb;

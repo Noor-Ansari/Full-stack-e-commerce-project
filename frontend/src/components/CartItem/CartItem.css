@@ -18,12 +18,17 @@
 
 .cart-product-name {
 	font-size: 2rem;
+	text-transform: capitalize;
 }
 
 .cart-product-description {
 	margin: 1rem 0;
 	font-weight: 400;
 	width: 80%;
+}
+
+.cart-product-description::first-letter{
+	text-transform: uppercase;
 }
 
 .cart-product-price {

@@ -10,7 +10,7 @@ function Products({ products }) {
 				products.map((product) => (
 					<div className='product-card' key={product._id}>
 						<img
-							src={`data:image/jpeg;base64,${product.image}`}
+							src={`http://localhost:4000/${product.image}`}
 							alt={product.name}
 							className='card-image'
 						/>

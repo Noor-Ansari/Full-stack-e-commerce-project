@@ -51,7 +51,7 @@ function SingleProduct({ user }) {
 						</Link>
 						<div className='product-wrapper'>
 							<img
-								src={`data:image/jpeg;base64,${product.image}`}
+								src={`http://localhost:4000/${product.image}`}
 								alt={product.name}
 								className='product-image '
 							/>

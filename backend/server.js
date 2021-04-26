@@ -11,13 +11,14 @@ const storage = multer.diskStorage({
 		cb(null, "./uploads/");
 	},
 	filename: function (req, file, cb) {
-		cb(null, new Date().toISOString().replace(/:/g, "-"));
+		cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
 	},
 });
 const upload = multer({ storage: storage });
 
 const app = express();
 app.use(cors());
+app.use("/uploads", express.static('uploads'))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
@@ -56,20 +57,18 @@ app.get("/products", (req, res) => {
 app.post("/products/upload", upload.single("image"), (req, res, next) => {
 	const { name, description, owner, category, price } = req.body;
 	if (req.file) {
-		const newImg = fs.readFileSync(req.file.path);
-		const encodedImg = newImg.toString("base64");
 		const product = new ProductModel({
 			name,
 			description,
 			price,
 			owner,
 			category,
-			image: encodedImg,
+			image: req.file.path
 		});
 		product
 			.save()
-			.then((response) => res.json(response))
-			.catch((err) => console.log(err));
+			.then((response) => res.status(200).json(response))
+			.catch((err) => res.status(500).json(err));
 	}
 });
 
