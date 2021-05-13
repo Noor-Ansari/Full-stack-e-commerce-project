@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Products from "../Products/Products";
 import axios from "axios";
-import Loader from "react-loader-spinner";
 import "./HomePage.css";
 import { addProducts } from "../../redux/actionCreators";
 import { connect } from "react-redux";
@@ -19,17 +18,7 @@ function HomePage({ addProducts }) {
 			.catch((err) => console.log(err));
 	}, []);
 
-	return (
-		<>
-			{isLoading ? (
-				<div className='loading-spinner'>
-					<Loader type='Oval' color='#fff' height={100} width={100} />
-				</div>
-			) : (
-				<Products />
-			)}
-		</>
-	);
+	return <Products isLoading={isLoading} />;
 }
 
 const mapDispatchToProps = (dispatch) => {

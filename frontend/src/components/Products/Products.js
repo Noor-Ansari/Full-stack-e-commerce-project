@@ -1,7 +1,8 @@
 import "./Products.css";
-import React  from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+import WithLoading from "../../HOC/WithLoading";
 
 function Products({ products }) {
 	return (
@@ -29,8 +30,8 @@ function Products({ products }) {
 
 const mapStateToProps = (state) => {
 	return {
-		products : state.products
-	}
-}
+		products: state.products,
+	};
+};
 
-export default connect(mapStateToProps)(Products)
+export default WithLoading(connect(mapStateToProps)(Products));

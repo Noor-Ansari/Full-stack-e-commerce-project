@@ -125,7 +125,6 @@ module.exports = {
 	},
 	customeRegister: (req, res) => {
 		const { name, email, password, confirmPassword } = req.body;
-		console.log(req.body);
 		UserModel.findOne({ email: email })
 			.exec()
 			.then(async (doc) => {

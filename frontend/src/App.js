@@ -2,13 +2,12 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./components/HomePage/HomePage";
 import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
-import SingleProduct from "./components/SingleProduct/SingleProduct";
+import SingleProductPage from "./components/SingleProductPage/SingleProductPage";
 import Layout from "./components/Layout/Layout";
 import React from "react";
 import CartPage from "./components/CartPage/CartPage";
 import LogInForm from "./components/forms/LogIn";
 import RegisterForm from "./components/forms/Register";
-
 
 function App() {
 	return (
@@ -24,7 +23,7 @@ function App() {
 					<Layout>
 						<Switch>
 							<Route path='/allproducts/product/:id'>
-								<SingleProduct />
+								<SingleProductPage />
 							</Route>
 							<Route path='/allproducts/:category'>
 								<CategoriesPage />

@@ -1,9 +1,15 @@
-import { ADD_USER, ADD_CART, REMOVE_PRODUCT,  ADD_PRODUCTS, REMOVE_USER } from "./Types";
+import {
+	ADD_USER,
+	ADD_CART,
+	REMOVE_PRODUCT,
+	ADD_PRODUCTS,
+	REMOVE_USER,
+} from "./Types";
 
 const initialState = {
 	user: JSON.parse(sessionStorage.getItem("user")) || "",
-    cart: [],
-    products : []
+	cart: [],
+	products: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -14,16 +20,16 @@ const rootReducer = (state = initialState, action) => {
 				user: action.payload,
 			};
 		case REMOVE_USER:
-			sessionStorage.removeItem("user")
+			sessionStorage.removeItem("user");
 			return {
 				...state,
-				user : ""	
-		}
-        case ADD_PRODUCTS:
-           return {
-               ...state,
-               products : action.payload
-            }
+				user: "",
+			};
+		case ADD_PRODUCTS:
+			return {
+				...state,
+				products: action.payload,
+			};
 		case ADD_CART:
 			return {
 				...state,

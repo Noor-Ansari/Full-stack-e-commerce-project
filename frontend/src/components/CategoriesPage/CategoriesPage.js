@@ -1,43 +1,35 @@
 import React, { useState, useEffect } from "react";
-import Products from "../Products/Products";
 import { useParams, useHistory } from "react-router-dom";
-import axios from "axios";
-import Loader from "react-loader-spinner";
-import "./CategoriesPage.css";
 import { connect } from "react-redux";
 import { addProducts } from "../../redux/actionCreators";
+import Products from "../Products/Products";
+import axios from "axios";
+import "./CategoriesPage.css";
 
 function CategoriesPage({ addProducts }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const { category } = useParams();
-	const history = useHistory()
+	const history = useHistory();
 
 	useEffect(() => {
 		axios
 			.get(`http://localhost:4000/api/allproducts/${category}`)
 			.then(({ data }) => {
 				if (data.info) {
-					alert(`${data.info}`)
-					history.push("/")
+					alert(`${data.info}`);
+					history.push("/");
 				} else {
-					addProducts(data)
+					addProducts(data);
 				}
-				setIsLoading(false)
+				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
+		return () => {
+			setIsLoading(true);
+		};
 	}, [category]);
 
-	return (
-		<>
-			{isLoading ? (
-				<div className='loading-spinner'>
-					<Loader type='Oval' color='#fff' height={100} width={100} />
-				</div>
-			) : (
-				<Products />
-			)}
-		</>
-	);
+	return <Products isLoading={isLoading} />;
 }
 
 const mapDispatchToProps = (dispatch) => {

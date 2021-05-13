@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { Link } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 const initialValues = {
 	name: "",
@@ -32,6 +33,8 @@ const validationSchema = Yup.object({
 
 function RegisterForm() {
 	const history = useHistory();
+	const [modal, setModal] = useState(false);
+	const [modalText, setModaltext] = useState("");
 
 	const handleRegister = (response) => {
 		axios
@@ -40,7 +43,8 @@ function RegisterForm() {
 			})
 			.then(({ data }) => {
 				if (data.info) {
-					alert(`${data.info}`);
+					setModaltext(`${data.info}`);
+					setModal(true);
 				} else {
 					history.push("/login");
 				}
@@ -58,7 +62,8 @@ function RegisterForm() {
 			})
 			.then(({ data }) => {
 				if (data.info) {
-					alert(`${data.info}`);
+					setModaltext(`${data.info}`);
+					setModal(true);
 				} else {
 					history.push("/login");
 				}
@@ -67,88 +72,111 @@ function RegisterForm() {
 	};
 
 	return (
-		<main className='form-main-wrapper'>
-			<div className='form-wrapper'>
-				<Formik
-					initialValues={initialValues}
-					onSubmit={onSubmit}
-					validationSchema={validationSchema}
-				>
-					<Form>
-						<div className='form-group'>
-							<label htmlFor='name' className='form-label'>
-								Name
-							</label>
-							<Field name='name' type='text' placeholder="Name..." className='form-control' />
-							<p className='text-message'>
-								<ErrorMessage name='name' />
-							</p>
-						</div>
-						<div className='form-group'>
-							<label htmlFor='email' className='form-label'>
-								Email
-							</label>
-							<Field name='email' type='email' placeholder="Email..." className='form-control' />
-							<p className='text-message'>
-								<ErrorMessage name='email' />
-							</p>
-						</div>
-						<div className='form-group'>
-							<label htmlFor='password' className='form-label'>
-								Password
-							</label>
-							<Field
-								name='password'
-								type='password'
-								placeholder="Password..." 
-								autoComplete='on'
-								className='form-control'
-							/>
-							<p className='text-message'>
-								<ErrorMessage name='password' />
-							</p>
-						</div>
-						<div className='form-group'>
-							<label htmlFor='confirmPassword' className='form-label'>
-								Confirm Password
-							</label>
-							<Field
-								name='confirmPassword'
-								type='password'
-								placeholder="Confirm Password..." 
-								className='form-control'
-								autoComplete='on'
-							/>
-							<p className='text-message'>
-								<ErrorMessage name='confirmPassword' />
-							</p>
-						</div>
-						<button type='submit' className='submit-button'>
-							Register
-						</button>
-					</Form>
-				</Formik>
-				<p className='or'>or</p>
-				<GoogleLogin
-					clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-					render={(renderProps) => (
-						<button
-							onClick={renderProps.onClick}
-							disabled={renderProps.disabled}
-							className='google-button'
-						>
-							Register with google
-						</button>
-					)}
-					onSuccess={handleRegister}
-					onFailure={handleRegister}
-					cookiePolicy={"single_host_origin"}
-				/>
-				<p className='info-message'>
-					Already have an account? <Link to='/login'>Login</Link>
-				</p>
-			</div>
-		</main>
+		<>
+			{modal && <Modal modalText={modalText} setModal={setModal} />}
+			<main className='form-main-wrapper'>
+				<div className='form-wrapper'>
+					<Formik
+						initialValues={initialValues}
+						onSubmit={onSubmit}
+						validationSchema={validationSchema}
+					>
+						<Form>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='name' className='form-label'>
+										Name
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='name' />
+									</span>
+								</div>
+								<Field
+									name='name'
+									type='text'
+									placeholder='Name...'
+									className='form-control'
+								/>
+							</div>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='email' className='form-label'>
+										Email
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='email' />
+									</span>
+								</div>
+								<Field
+									name='email'
+									type='email'
+									placeholder='Email...'
+									className='form-control'
+								/>
+							</div>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='password' className='form-label'>
+										Password
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='password' />
+									</span>
+								</div>
+
+								<Field
+									name='password'
+									type='password'
+									placeholder='Password...'
+									autoComplete='on'
+									className='form-control'
+								/>
+							</div>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='confirmPassword' className='form-label'>
+										Confirm Password
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='confirmPassword' />
+									</span>
+								</div>
+
+								<Field
+									name='confirmPassword'
+									type='password'
+									placeholder='Confirm Password...'
+									className='form-control'
+									autoComplete='on'
+								/>
+							</div>
+							<button type='submit' className='submit-button'>
+								Register
+							</button>
+						</Form>
+					</Formik>
+					<p className='or'>or</p>
+					<GoogleLogin
+						clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+						render={(renderProps) => (
+							<button
+								onClick={renderProps.onClick}
+								disabled={renderProps.disabled}
+								className='google-button'
+							>
+								Register with google
+							</button>
+						)}
+						onSuccess={handleRegister}
+						onFailure={handleRegister}
+						cookiePolicy={"single_host_origin"}
+					/>
+					<p className='info-message'>
+						Already have an account? <Link to='/login'>Login</Link>
+					</p>
+				</div>
+			</main>
+		</>
 	);
 }
 

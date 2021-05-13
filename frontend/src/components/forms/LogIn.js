@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 import { addUser } from "../../redux/actionCreators";
 import { GoogleLogin } from "react-google-login";
 import "./Forms.css";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 const initialValues = {
 	email: "",
@@ -21,6 +22,8 @@ const validationSchema = Yup.object({
 
 function LogInForm({ addUserToState }) {
 	const history = useHistory();
+	const [modal, setModal] = useState(false);
+	const [modalText, setModaltext] = useState("");
 
 	const handleLogin = (response) => {
 		axios
@@ -29,7 +32,8 @@ function LogInForm({ addUserToState }) {
 			})
 			.then(({ data }) => {
 				if (data.info) {
-					alert(`${data.info}`);
+					setModaltext(`${data.info}`);
+					setModal(true);
 				} else {
 					sessionStorage.setItem("user", JSON.stringify(data));
 					addUserToState(data);
@@ -47,7 +51,8 @@ function LogInForm({ addUserToState }) {
 			})
 			.then(({ data }) => {
 				if (data.info) {
-					alert(`${data.info}`);
+					setModaltext(`${data.info}`);
+					setModal(true);
 				} else {
 					sessionStorage.setItem("user", JSON.stringify(data));
 					addUserToState(data);
@@ -58,67 +63,78 @@ function LogInForm({ addUserToState }) {
 	};
 
 	return (
-		<main className='form-main-wrapper'>
-			<div className='form-wrapper'>
-				<Formik
-					initialValues={initialValues}
-					onSubmit={onSubmit}
-					validationSchema={validationSchema}
-				>
-					<Form>
-						<div className='form-group'>
-							<label htmlFor='email' className='form-label'>
-								Email
-							</label>
-							<Field
-								name='email'
-								type='email'
-								className='form-control'
-								placeholder='Email...'
-							/>
-							<p className='text-message'>
-								<ErrorMessage name='email' />
-							</p>
-						</div>
-						<div className='form-group'>
-							<label htmlFor='password' className='form-label'>
-								Password
-							</label>
-							<Field
-								name='password'
-								type='password'
-								className='form-control'
-								placeholder='Password...'
-								autoComplete="on"
-							/>
-							<p className='text-message'>
-								<ErrorMessage name='password' />
-							</p>
-						</div>
-						<button type='submit' className='submit-button'>
-							Login
-						</button>
-					</Form>
-				</Formik>
-				<p className='or'>or</p>
-				<GoogleLogin
-					clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-					render={(renderProps) => (
-						<button
-							onClick={renderProps.onClick}
-							disabled={renderProps.disabled}
-							className='google-button'
-						>
-							Login with google
-						</button>
-					)}
-					onSuccess={handleLogin}
-					onFailure={handleLogin}
-					cookiePolicy={"single_host_origin"}
-				/>
-				<p className='info-message'>Don't have an account? <Link to="/register">Register</Link></p>
-			</div>
-		</main>
+		<>
+			{modal && <Modal modalText={modalText} setModal={setModal} />}
+			<main className='form-main-wrapper'>
+				<div className='form-wrapper'>
+					<Formik
+						initialValues={initialValues}
+						onSubmit={onSubmit}
+						validationSchema={validationSchema}
+					>
+						<Form>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='email' className='form-label'>
+										Email
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='email' />
+									</span>
+								</div>
+
+								<Field
+									name='email'
+									type='email'
+									className='form-control'
+									placeholder='Email...'
+								/>
+							</div>
+							<div className='form-group'>
+								<div className='labels-row'>
+									<label htmlFor='password' className='form-label'>
+										Password
+									</label>
+									<span className='text-message'>
+										<ErrorMessage name='password' />
+									</span>
+								</div>
+
+								<Field
+									name='password'
+									type='password'
+									className='form-control'
+									placeholder='Password...'
+									autoComplete='on'
+								/>
+							</div>
+							<button type='submit' className='submit-button'>
+								Login
+							</button>
+						</Form>
+					</Formik>
+					<p className='or'>or</p>
+					<GoogleLogin
+						clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+						render={(renderProps) => (
+							<button
+								onClick={renderProps.onClick}
+								disabled={renderProps.disabled}
+								className='google-button'
+							>
+								Login with google
+							</button>
+						)}
+						onSuccess={handleLogin}
+						onFailure={handleLogin}
+						cookiePolicy={"single_host_origin"}
+					/>
+					<p className='info-message'>
+						Don't have an account? <Link to='/register'>Register</Link>
+					</p>
+				</div>
+			</main>
+		</>
 	);
 }
 
