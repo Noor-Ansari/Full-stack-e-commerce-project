@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import GoogleAuth from "./GoogleAuth";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 
@@ -35,22 +35,6 @@ function RegisterForm() {
 	const history = useHistory();
 	const [modal, setModal] = useState(false);
 	const [modalText, setModaltext] = useState("");
-
-	const handleRegister = (response) => {
-		axios
-			.post("http://localhost:4000/api/google/register", {
-				tokenId: response.tokenId,
-			})
-			.then(({ data }) => {
-				if (data.info) {
-					setModaltext(`${data.info}`);
-					setModal(true);
-				} else {
-					history.push("/login");
-				}
-			})
-			.catch((err) => console.log(err));
-	};
 
 	const onSubmit = (values) => {
 		axios
@@ -156,20 +140,11 @@ function RegisterForm() {
 						</Form>
 					</Formik>
 					<p className='or'>or</p>
-					<GoogleLogin
-						clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-						render={(renderProps) => (
-							<button
-								onClick={renderProps.onClick}
-								disabled={renderProps.disabled}
-								className='google-button'
-							>
-								Register with google
-							</button>
-						)}
-						onSuccess={handleRegister}
-						onFailure={handleRegister}
-						cookiePolicy={"single_host_origin"}
+					<GoogleAuth
+						text='Register with google'
+						action='register'
+						setModal={setModal}
+						setModaltext={setModaltext}
 					/>
 					<p className='info-message'>
 						Already have an account? <Link to='/login'>Login</Link>

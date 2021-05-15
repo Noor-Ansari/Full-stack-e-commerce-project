@@ -5,10 +5,10 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { addUser } from "../../redux/actionCreators";
-import { GoogleLogin } from "react-google-login";
 import "./Forms.css";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
+import GoogleAuth from "./GoogleAuth";
 
 const initialValues = {
 	email: "",
@@ -24,24 +24,6 @@ function LogInForm({ addUserToState }) {
 	const history = useHistory();
 	const [modal, setModal] = useState(false);
 	const [modalText, setModaltext] = useState("");
-
-	const handleLogin = (response) => {
-		axios
-			.post("http://localhost:4000/api/google/login", {
-				tokenId: response.tokenId,
-			})
-			.then(({ data }) => {
-				if (data.info) {
-					setModaltext(`${data.info}`);
-					setModal(true);
-				} else {
-					sessionStorage.setItem("user", JSON.stringify(data));
-					addUserToState(data);
-					history.push("/");
-				}
-			})
-			.catch((err) => console.log(err));
-	};
 
 	const onSubmit = (values) => {
 		axios
@@ -114,20 +96,11 @@ function LogInForm({ addUserToState }) {
 						</Form>
 					</Formik>
 					<p className='or'>or</p>
-					<GoogleLogin
-						clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-						render={(renderProps) => (
-							<button
-								onClick={renderProps.onClick}
-								disabled={renderProps.disabled}
-								className='google-button'
-							>
-								Login with google
-							</button>
-						)}
-						onSuccess={handleLogin}
-						onFailure={handleLogin}
-						cookiePolicy={"single_host_origin"}
+					<GoogleAuth
+						text='Login with google'
+						action='login'
+						setModal={setModal}
+						setModaltext={setModaltext}
 					/>
 					<p className='info-message'>
 						Don't have an account? <Link to='/register'>Register</Link>

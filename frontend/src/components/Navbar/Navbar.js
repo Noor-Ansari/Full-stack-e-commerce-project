@@ -1,24 +1,22 @@
 import "./Navbar.css";
 import LocalMallOutlinedIcon from "@material-ui/icons/LocalMallOutlined";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import RoomOutlinedIcon from "@material-ui/icons/RoomOutlined";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import React from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { removeUser } from "../../redux/actionCreators";
+import LabeledIcon from "../LabeledIcon";
 
 function Navbar({ user, removeUser }) {
 	const logOut = () => {
 		let result = window.confirm("Do you want to logout?");
-		console.log(result);
 		if (result) {
 			removeUser(user);
 		}
 	};
 
-	const secondRow = [
+	const secondRowMeta = [
 		{ link: "/", label: "Home" },
 		{ link: "/allproducts/fashion", label: "Fashion" },
 		{ link: "/allproducts/sports", label: "Sports" },
@@ -26,63 +24,37 @@ function Navbar({ user, removeUser }) {
 		{ link: "/allproducts/footwears", label: "Footwears" },
 	];
 
+	const userLabel = user ? (
+		<p onClick={logOut} className='nav-links nav-icon'>
+			<VpnKeyIcon />
+			Logout
+		</p>
+	) : (
+		<LabeledIcon text='Login' Icon={VpnKeyIcon} href='/login' />
+	);
 	return (
 		<nav>
 			<div className='first-row'>
 				<div className='left-part'>
-					<Link to='#' className='nav-icon'>
-						<SearchOutlinedIcon />
-						Search
-					</Link>
-					<Link to='#' className='nav-icon'>
-						<RoomOutlinedIcon />
-						Location
-					</Link>
+					<LabeledIcon text='Search' Icon={SearchOutlinedIcon} />
+					<LabeledIcon text='Location' Icon={RoomOutlinedIcon} />
 				</div>
-				<h1 className='brand-logo'>
-					<Link to='/' className='brand-link'>
-						Shopping Plaza
-					</Link>
+				<h1 className='brand-name'>
+					<LabeledIcon text='Shopping Plaza' href='/' />
 				</h1>
 				<div className='right-part'>
-					{user ? (
-						<div className='nav-icon' onClick={logOut}>
-							<VpnKeyIcon />
-							Logout
-						</div>
-					) : (
-						<Link to='/login' className='nav-icon'>
-							<VpnKeyIcon />
-							Login
-						</Link>
-					)}
-					{user ? (
-						<div className='nav-icon'>
-							<AccountCircleOutlinedIcon />
-							{user.name}
-						</div>
-					) : (
-						<Link to='/register' className='nav-icon'>
-							<AccountCircleOutlinedIcon />
-							Register
-						</Link>
-					)}
-					<Link to='/user/cart' className='nav-icon'>
-						<LocalMallOutlinedIcon />
-						Your cart
-					</Link>
+					{userLabel}
+					<LabeledIcon
+						text='Your cart'
+						Icon={LocalMallOutlinedIcon}
+						href='/user/cart'
+					/>
 				</div>
 			</div>
 			<div className='second-row'>
-				<ul>
-					{secondRow.map((item, idx) => (
-						<li key={idx}>
-							<Link to={item.link} className='nav-links'>
-								{item.label}
-							</Link>
-						</li>
-					))}
-				</ul>
+				{secondRowMeta.map((item, idx) => (
+					<LabeledIcon text={item.label} href={item.link} key={idx} />
+				))}
 			</div>
 		</nav>
 	);
