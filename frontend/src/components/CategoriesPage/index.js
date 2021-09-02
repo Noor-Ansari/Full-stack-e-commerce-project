@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { addProducts } from "../../redux/actionCreators";
-import Products from "../Products/Products";
+import Products from "../Products";
 import axios from "axios";
 import "./CategoriesPage.css";
 

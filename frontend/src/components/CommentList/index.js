@@ -1,5 +1,5 @@
 import "./CommentList.css";
-import Comment from "../Comment/Comment";
+import Comment from "../Comment";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import WithLoading from "../../HOC/WithLoading";

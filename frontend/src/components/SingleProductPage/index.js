@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./SingleProductPage.css";
-import CommentList from "../CommentList/CommentList";
-import CommentForm from "../CommentForm/CommentForm";
-import SingleProductCard from "../SingleProductCard/SingleProductCard";
+import CommentList from "../CommentList";
+import CommentForm from "../CommentForm";
+import SingleProductCard from "../SingleProductCard";
 
 function SingleProduct() {
 	const [product, setProduct] = useState("");

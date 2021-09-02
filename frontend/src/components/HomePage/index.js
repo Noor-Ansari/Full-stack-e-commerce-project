@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Products from "../Products/Products";
+import Products from "../Products";
 import axios from "axios";
 import "./HomePage.css";
 import { addProducts } from "../../redux/actionCreators";

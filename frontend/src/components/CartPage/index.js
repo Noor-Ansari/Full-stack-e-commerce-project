@@ -1,8 +1,8 @@
 import "./CartPage.css";
 import React, { useEffect } from "react";
 import axios from "axios";
-import CartItem from "../CartItem/CartItem";
-import CartSummary from "../CartSummary/CartSummary";
+import CartItem from "../CartItem";
+import CartSummary from "../CartSummary";
 import { connect } from "react-redux";
 import { addCart } from "../../redux/actionCreators";
 import { Link } from "react-router-dom";
