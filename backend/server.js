@@ -6,6 +6,7 @@ const cors = require("cors");
 const controllers = require("./controllers/index")
 const ProductModel = require("./model/product");
 
+
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, "./uploads/");
@@ -72,6 +73,6 @@ app.post("/products/upload", upload.single("image"), (req, res, next) => {
 	}
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => console.log(`server is runing on port  ${PORT}`));

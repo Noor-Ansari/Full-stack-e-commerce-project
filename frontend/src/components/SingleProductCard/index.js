@@ -5,7 +5,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal";
 
 function SingleProductCard({ productData, user, id }) {
 	const { name, price, description, image } = productData;

@@ -27,7 +27,7 @@ function CategoriesPage({ addProducts }) {
 		return () => {
 			setIsLoading(true);
 		};
-	}, [category]);
+	}, [category, addProducts, history]);
 
 	return <Products isLoading={isLoading} />;
 }

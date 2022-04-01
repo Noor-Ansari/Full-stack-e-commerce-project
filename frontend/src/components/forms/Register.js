@@ -5,7 +5,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import GoogleAuth from "./GoogleAuth";
 import { Link } from "react-router-dom";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal";
 
 const initialValues = {
 	name: "",

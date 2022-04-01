@@ -16,7 +16,7 @@ function HomePage({ addProducts }) {
 				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [addProducts]);
 
 	return <Products isLoading={isLoading} />;
 }

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { addUser } from "../../redux/actionCreators";
 import "./Forms.css";
 import { Link } from "react-router-dom";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal";
 import GoogleAuth from "./GoogleAuth";
 
 const initialValues = {

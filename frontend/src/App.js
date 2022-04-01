@@ -1,11 +1,11 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import HomePage from "./components/HomePage/HomePage";
-import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
-import SingleProductPage from "./components/SingleProductPage/SingleProductPage";
-import Layout from "./components/Layout/Layout";
+import HomePage from "./components/HomePage";
+import CategoriesPage from "./components/CategoriesPage";
+import SingleProductPage from "./components/SingleProductPage";
+import Layout from "./components/Layout";
 import React from "react";
-import CartPage from "./components/CartPage/CartPage";
+import CartPage from "./components/CartPage";
 import LogInForm from "./components/forms/LogIn";
 import RegisterForm from "./components/forms/Register";
 
